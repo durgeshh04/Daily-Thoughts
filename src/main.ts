@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { HttpStatus, ValidationPipe } from '@nestjs/common';
+import { HttpException, HttpStatus, ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -22,11 +22,11 @@ async function bootstrap() {
 
   try {
     await app.listen(process.env.PORT ?? 3000);
+    console.log('Database Connected Successfully');
     console.log(`Server is running on http://localhost:${3000}/`);
-    // console.log('Database Connected');
   } catch (error) {
     console.error(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
-    // throw new Error(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
 bootstrap();

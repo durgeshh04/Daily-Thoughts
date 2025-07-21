@@ -1,20 +1,22 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
+import { GoogleOAuthGuard } from '../guards/AuthGuard';
+import { AuthService } from './auth.service';
 
-@Controller({ path: 'auth', version: 'v1' })
+@Controller({ path: 'auth', version: '1' })
 export class AuthController {
-  constructor() {}
-  @Get('/google/register')
+  constructor(private readonly authService: AuthService) {}
+  @Get('/google-register')
+  @UseGuards(GoogleOAuthGuard)
   @ApiOperation({ description: 'This is registration api' })
-  async authRegister() {
-    return { msg: 'hello' };
-  }
+  async authRegister(@Request() req) {}
 
-  @Get('/google/redirect')
+  @Get('/google-redirect')
+  @UseGuards(GoogleOAuthGuard)
   @ApiOperation({
     description: 'This api redirects to home page after successfully register',
   })
-  async handleRedirect() {
-    return { msg: 'redirecting' };
+  async googleAuthRedirect(@Request() req) {
+    return this.authService.googleLogin(req);
   }
 }

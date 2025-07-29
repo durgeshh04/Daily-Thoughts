@@ -1,14 +1,18 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { UserServiceV1 } from './user.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('user controller')
-@Controller({ path: 'user', version: 'v1' })
+@Controller({ path: 'user', version: '1' })
 export class UserControllerV1 {
-  constructor(private readonly userServicev1: UserServiceV1) {}
+  constructor(private readonly userService: UserServiceV1) {}
   @Get('/get/details')
-  @ApiOperation({ description: 'Get all users' })
-  async getUserDetails() {
-    return this.userServicev1.getUserDetails();
+  @ApiBearerAuth('access-token')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ description: 'Get Profile Details' })
+  async getUserDetails(@Req() req) {
+    const userId = req.user?.userId;
+    return this.userService.getUserDetails(userId);
   }
 }

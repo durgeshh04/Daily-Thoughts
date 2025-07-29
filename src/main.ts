@@ -23,6 +23,17 @@ async function bootstrap() {
     .setDescription('api documentation')
     .setVersion('1.0')
     // .addTag('')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'jwt',
+        name: 'Authorization',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'access-token',
+    )
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
@@ -30,7 +41,7 @@ async function bootstrap() {
 
   try {
     await app.listen(process.env.PORT ?? 3000);
-    console.log('Database Connected Successfully');
+    console.log('Database Connected Successfully', process.env.POSTGRES_DB);
     console.log(`Server is running on http://localhost:${3000}/`);
   } catch (error) {
     console.error(error.message, HttpStatus.INTERNAL_SERVER_ERROR);

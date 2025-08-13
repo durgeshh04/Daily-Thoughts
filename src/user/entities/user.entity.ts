@@ -1,4 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ schema: 'user_schema', name: 'user_details' })
 export class User {
@@ -22,4 +27,7 @@ export class User {
 
   @Column({ type: 'varchar', nullable: true })
   refreshtoken: string;
+
+  @CreateDateColumn()
+  createdat: Date;
 }

@@ -8,4 +8,12 @@ export class DailyUserPostsService {
   async userDailyPosts(userId: string, post: DailyPostDto) {
     return this.dailyPostsRepo.userDailyPosts(userId, post);
   }
+
+  async usersAllPosts(userId: string): Promise<object> {
+    return this.dailyPostsRepo.usersAllPosts(userId);
+  }
+
+  async postById(userId: string, postId: string): Promise<object> {
+    return this.dailyPostsRepo.postById(userId, postId);
+  }
 }

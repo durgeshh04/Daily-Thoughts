@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { DailyUserPostsService } from './post.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -14,5 +22,21 @@ export class DailyUserPostsController {
   async userDailyPost(@Req() req, @Body() post: DailyPostDto) {
     const userId = req?.user?.userId;
     return this.dailyPostsService.userDailyPosts(userId, post);
+  }
+
+  @ApiBearerAuth('access-token')
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/users/all/post')
+  async usersAllPosts(@Req() req) {
+    const userId = req?.user?.userId;
+    return this.dailyPostsService.usersAllPosts(userId);
+  }
+
+  @ApiBearerAuth('access-token')
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/user/post/:postid')
+  async postById(@Req() req, @Param('postid') postId: string) {
+    const userId = req?.user?.userId;
+    return this.dailyPostsService.postById(userId, postId);
   }
 }

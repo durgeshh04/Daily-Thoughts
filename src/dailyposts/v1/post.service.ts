@@ -16,4 +16,8 @@ export class DailyUserPostsService {
   async postById(userId: string, postId: string): Promise<object> {
     return this.dailyPostsRepo.postById(userId, postId);
   }
+
+  async deletePostById(userId: string, postId: string): Promise<object> {
+    return this.dailyPostsRepo.deletePostById(userId, postId);
+  }
 }

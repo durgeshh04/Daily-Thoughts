@@ -4,6 +4,7 @@ import { DailyPosts } from '../entities/dailyposts.entity';
 import { Repository } from 'typeorm';
 import { DailyPostDto } from '../dtos/dailyposts.dto';
 import { User } from 'src/user/entities/user.entity';
+import { DailyPostCommonReponse } from '../dailypost.interface';
 
 @Injectable()
 export class DailyPostsRepo {
@@ -13,6 +14,14 @@ export class DailyPostsRepo {
     @InjectRepository(DailyPosts)
     private readonly dailyPostsRepo: Repository<DailyPosts>,
   ) {}
+
+  async findUser(userId: string): Promise<boolean> {
+    const validUser = await this.userDetailsRepo.findOneBy({ userid: userId });
+    if (!validUser) {
+      return false;
+    }
+    return true;
+  }
 
   async userDailyPosts(userId: string, post: DailyPostDto): Promise<object> {
     try {
@@ -97,6 +106,34 @@ export class DailyPostsRepo {
       );
       throw new HttpException(
         'Got an error while fetching data of a specific post',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async deletePostById(userId, postId): Promise<DailyPostCommonReponse> {
+    try {
+      const user = this.findUser(userId);
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+
+      const validPost = await this.dailyPostsRepo.findOneBy({ postid: postId });
+      if (!validPost) {
+        throw new HttpException('post not found', HttpStatus.NOT_FOUND);
+      }
+
+      await this.dailyPostsRepo.delete({ postid: postId, userid: userId });
+
+      return {
+        success: true,
+        timestamp: new Date(),
+        message: 'post deleted successfully',
+      };
+    } catch (error) {
+      console.error('Error occurred while deleting post', error.message);
+      throw new HttpException(
+        'Got an error while deleting the post',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

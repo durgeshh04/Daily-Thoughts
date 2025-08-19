@@ -64,7 +64,12 @@ export class DailyPostsRepo {
       const usersAllPosts = await this.dailyPostsRepo
         .createQueryBuilder('posts')
         .where('posts.userid = :userId', { userId })
-        .select(['posts.postid', 'posts.content', 'posts.mediaUrl'])
+        .select([
+          'posts.postid',
+          'posts.content',
+          'posts.mediaUrl',
+          'posts.createdat',
+        ])
         .getMany();
       return usersAllPosts;
     } catch (error) {
@@ -91,7 +96,12 @@ export class DailyPostsRepo {
         .createQueryBuilder('posts')
         .where('posts.userid = :userId', { userId })
         .andWhere('posts.postid = :postId', { postId })
-        .select(['posts.postid', 'posts.content', 'posts.mediaUrl'])
+        .select([
+          'posts.postid',
+          'posts.content',
+          'posts.mediaUrl',
+          'posts.createdat',
+        ])
         .getMany();
 
       if (!usersDailyPost) {

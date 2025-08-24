@@ -4,7 +4,11 @@ import { DailyPosts } from '../entities/dailyposts.entity';
 import { Repository } from 'typeorm';
 import { DailyPostDto } from '../dtos/dailyposts.dto';
 import { User } from 'src/user/entities/user.entity';
-import { DailyPostCommonReponse } from '../dailypost.interface';
+import {
+  DailyPostCommonReponse,
+  DailyPostResponse,
+  UserPostsResponse,
+} from '../interfaces/dailypost.interface';
 
 @Injectable()
 export class DailyPostsRepo {
@@ -53,7 +57,7 @@ export class DailyPostsRepo {
     }
   }
 
-  async usersAllPosts(userId: string): Promise<object> {
+  async usersAllPosts(userId: string): Promise<UserPostsResponse> {
     try {
       const userDetails = await this.userDetailsRepo.findOneBy({
         userid: userId,
@@ -61,7 +65,7 @@ export class DailyPostsRepo {
       if (!userDetails) {
         throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
       }
-      const usersAllPosts = await this.dailyPostsRepo
+      const [usersAllPosts, postsCount] = await this.dailyPostsRepo
         .createQueryBuilder('posts')
         .where('posts.userid = :userId', { userId })
         .select([
@@ -70,8 +74,22 @@ export class DailyPostsRepo {
           'posts.mediaUrl',
           'posts.createdat',
         ])
-        .getMany();
-      return usersAllPosts;
+        .getManyAndCount();
+
+      const DailyPostRes = usersAllPosts.map((post) => ({
+        postId: post.postid,
+        content: post.content,
+        mediaUrl: post.mediaUrl,
+        createdAt: post.createdat,
+      }));
+
+      return {
+        status: HttpStatus.OK,
+        success: true,
+        timestamp: new Date(),
+        data: DailyPostRes,
+        totalCount: postsCount,
+      };
     } catch (error) {
       console.error(
         'error occurred while fetching the all posts of user',

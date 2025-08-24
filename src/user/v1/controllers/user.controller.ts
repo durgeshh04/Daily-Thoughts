@@ -1,5 +1,5 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { UserServiceV1 } from './user.service';
+import { UserServiceV1 } from '../services/user.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 

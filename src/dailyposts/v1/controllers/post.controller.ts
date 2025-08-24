@@ -8,10 +8,10 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { DailyUserPostsService } from './post.service';
+import { DailyUserPostsService } from '../services/post.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { DailyPostDto } from '../dtos/dailyposts.dto';
+import { DailyPostDto } from '../../dtos/dailyposts.dto';
 
 @Controller({ path: 'dailypost', version: '1' })
 export class DailyUserPostsController {

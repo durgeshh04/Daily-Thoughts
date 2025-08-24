@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { DailyPostsRepo } from '../repositories/post.repo';
-import { DailyPostDto } from '../dtos/dailyposts.dto';
+import { DailyPostsRepo } from '../../repositories/post.repo';
+import { DailyPostDto } from '../../dtos/dailyposts.dto';
 
 @Injectable()
 export class DailyUserPostsService {

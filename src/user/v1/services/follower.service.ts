@@ -12,4 +12,8 @@ export class FollowerService {
   async followUser(userId: string, followUserId: string) {
     return this.followerRepository.followUser(userId, followUserId);
   }
+
+  async unfollowUser(userId: string, unfollowUserId: string) {
+    return this.followerRepository.unfollowUser(userId, unfollowUserId);
+  }
 }

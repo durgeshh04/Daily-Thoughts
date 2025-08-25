@@ -6,3 +6,9 @@ export class FollowUserDto {
   @IsString()
   followUserId: string;
 }
+
+export class UnfollowFollowUserDto {
+  @ApiProperty()
+  @IsString()
+  unfollowUserId: string;
+}

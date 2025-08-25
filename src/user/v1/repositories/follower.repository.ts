@@ -24,6 +24,7 @@ export class FollowerRepository {
     private readonly userRepo: Repository<User>,
     private readonly dailyPostsRepo: DailyPostsRepo,
   ) {}
+
   private async userCheck(userId: string): Promise<boolean> {
     const existingUser = await this.userRepo.findOneBy({ userid: userId });
 
@@ -112,6 +113,42 @@ export class FollowerRepository {
       console.error('error occurred while following other user', error.message);
       throw new HttpException(
         'Got an error while following other user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async unfollowUser(
+    userId: string,
+    unfollowUserId: string,
+  ): Promise<FollowUserResponse> {
+    try {
+      await this.userCheck(userId);
+
+      const unfollowValidUser = await this.followerStatsRepo.findOneBy({
+        userid: unfollowUserId,
+        followerid: userId,
+      });
+
+      if (!unfollowValidUser) {
+        throw new BadRequestException('User id is wrong');
+      }
+
+      await this.followerStatsRepo.delete({
+        userid: unfollowUserId,
+        followerid: userId,
+      });
+
+      return {
+        status: HttpStatus.CREATED,
+        success: true,
+        timestamp: new Date(),
+        message: 'unfollowed successfully to the user',
+      };
+    } catch (error) {
+      console.error('Error occurred while unfollowing the user', error.message);
+      throw new HttpException(
+        'Error occurred while unfollowing the user, api failed',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

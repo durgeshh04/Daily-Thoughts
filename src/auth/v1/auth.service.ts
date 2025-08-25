@@ -18,11 +18,11 @@ export class AuthService {
     const payload = { sub: createdUser.userid, email: createdUser.email };
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: process.env.JWT_SECRET,
-      expiresIn: '15m',
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRESIN,
     });
     const refreshToken = await this.jwtService.signAsync(payload, {
       secret: process.env.REFRESH_SECRET,
-      expiresIn: '7d',
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRESIN,
     });
 
     const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);

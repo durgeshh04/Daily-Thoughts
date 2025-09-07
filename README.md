@@ -2,12 +2,12 @@
 ## Backend Code 
 
 ## Tech-Stack used
--- Nestjs
--- Postgresql
--- Sentry
--- Prometheus
--- Grafana
--- Swagger
+--Nestjs
+--Postgresql
+--Sentry
+--Prometheus
+--Grafana
+--Swagger
 
 ## Project setup
 

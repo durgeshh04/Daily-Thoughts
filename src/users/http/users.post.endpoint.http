@@ -1,6 +1,0 @@
-# Users Post Endpoint
-
-POST http://localhost:3000/users
-Content-Type: application/json
-
-{"name": "Durgesh", "email": "durgeshchaudhari@gmail.com", "mobile": "12345...."}

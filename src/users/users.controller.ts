@@ -13,6 +13,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { GetUserDto } from './dto/get-param.dto';
 
 @Controller('users')
 export class UsersController {
@@ -32,8 +33,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    console.log(typeof id);
+  findOne(@Param() paramDto: GetUserDto) {
+    let id: number = paramDto.id;
     return this.usersService.findOne(id);
   }
 

@@ -19,6 +19,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(10)
+  @MinLength(10)
   mobile: string;
 
   @IsNotEmpty()

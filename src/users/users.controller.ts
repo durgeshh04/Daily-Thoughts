@@ -6,12 +6,23 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  ParseIntPipe,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { UsersService } from './providers/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('users')
+@ApiTags('Users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -21,7 +32,29 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
+  @ApiOperation({
+    description: 'This api fetches data of all the users',
+  })
+  @ApiQuery({
+    name: 'page',
+    type: 'number',
+    default: 1,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'limit',
+    type: 'number',
+    default: 10,
+    required: false,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'User details successfully fetched',
+  })
+  findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+  ) {
     return this.usersService.findAll();
   }
 
@@ -31,7 +64,9 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @ApiBody({ type: UpdateUserDto })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    console.log(updateUserDto);
     return this.usersService.update(+id, updateUserDto);
   }
 

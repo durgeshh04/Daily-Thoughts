@@ -21,15 +21,30 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+/**
+ * This is users controller class
+ */
 @Controller('users')
 @ApiTags('Users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  /**
+   * This api is responsible to create the users
+   * @param createUserDto
+   * @returns
+   */
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
+
+  /**
+   * This api is responsible to fetch the data of all the users
+   * @param page
+   * @param limit
+   * @returns
+   */
 
   @Get()
   @ApiOperation({
@@ -58,11 +73,22 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  /**
+   * This api fetches the data of the single user
+   * @param id
+   * @returns
+   */
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
 
+  /**
+   * This api updates the single user information partially
+   * @param id
+   * @param updateUserDto
+   * @returns
+   */
   @Patch(':id')
   @ApiBody({ type: UpdateUserDto })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
@@ -70,6 +96,11 @@ export class UsersController {
     return this.usersService.update(+id, updateUserDto);
   }
 
+  /**
+   * This api is deletes a single user
+   * @param id
+   * @returns
+   */
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);

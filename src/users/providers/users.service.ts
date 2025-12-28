@@ -16,6 +16,13 @@ export class UsersService {
   ) {}
   async create(createUserDto: CreateUserDto) {
     try {
+      const existingUser = await this.userRepo.findOneBy({
+        email: createUserDto.email,
+      });
+      if (existingUser) {
+        throw new HttpException('User already exist', HttpStatus.CONFLICT);
+      }
+
       // Create and save address optional (city, pincode, state) || strict (country)
       const address = this.addressRepo.create({
         city: createUserDto.address.city,

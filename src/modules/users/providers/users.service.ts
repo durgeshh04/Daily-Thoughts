@@ -42,11 +42,12 @@ export class UsersService {
 
       // Create and save user
       const userData = this.userRepo.create({
-        firstName: createUserDto.firstName,
-        lastName: createUserDto.lastName,
+        first_name: createUserDto.firstName,
+        last_name: createUserDto.lastName,
         email: createUserDto.email,
-        phoneNo: createUserDto.phoneNo,
-        addressId: addressData.id,
+        password: createUserDto.password,
+        phone_no: createUserDto.phoneNo,
+        address_id: addressData.id,
       });
 
       await this.userRepo.save(userData);

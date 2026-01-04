@@ -13,14 +13,14 @@ export class User {
     length: 96,
     nullable: false,
   })
-  firstName: string;
+  first_name: string;
 
   @Column({
     type: 'varchar',
     length: 96,
     nullable: false,
   })
-  lastName: string;
+  last_name: string;
 
   @Column({
     type: 'varchar',
@@ -31,14 +31,20 @@ export class User {
 
   @Column({
     type: 'varchar',
+    nullable: false,
+  })
+  password: string;
+
+  @Column({
+    type: 'varchar',
     length: 10,
     nullable: false,
   })
-  phoneNo: string;
+  phone_no: string;
 
   @Column({
     type: 'int',
     nullable: false,
   })
-  addressId: number;
+  address_id: number;
 }

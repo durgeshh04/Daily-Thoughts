@@ -29,8 +29,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(process.env.SERVER_PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3000);
   console.log('Database connected Successfully');
-  console.log(`Server is running on PORT ${process.env.SERVER_PORT}`);
+  console.log(`Server is running on PORT ${process.env.PORT}`);
 }
 bootstrap();

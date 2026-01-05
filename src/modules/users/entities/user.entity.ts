@@ -1,26 +1,22 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-@Entity({
-  name: 'user_info',
-  schema: 'user_schema',
-})
+export enum UserRole {
+  USER = 'USER',
+  INTERVIEWER = 'INTERVIEWER',
+  RECRUITER = 'RECRUITER',
+  ADMIN = 'ADMIN',
+}
+
+@Entity('users')
 export class User {
-  @PrimaryGeneratedColumn({ type: 'int' })
-  id: number;
-
-  @Column({
-    type: 'varchar',
-    length: 96,
-    nullable: false,
-  })
-  first_name: string;
-
-  @Column({
-    type: 'varchar',
-    length: 96,
-    nullable: false,
-  })
-  last_name: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({
     type: 'varchar',
@@ -31,20 +27,41 @@ export class User {
 
   @Column({
     type: 'varchar',
+    name: 'username',
     nullable: false,
   })
-  password: string;
+  username: string;
 
   @Column({
     type: 'varchar',
-    length: 10,
+    name: 'display_name',
     nullable: false,
   })
-  phone_no: string;
+  displayName: string;
 
   @Column({
-    type: 'int',
+    type: 'varchar',
+    name: 'avatar_url',
+    nullable: true,
+  })
+  avatarUrl?: string;
+
+  @Column({
+    type: 'enum',
+    name: 'role',
+    enum: UserRole,
+    default: UserRole.USER,
     nullable: false,
   })
-  address_id: number;
+  role: UserRole;
+
+  @CreateDateColumn({
+    name: 'created_at',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+  })
+  updatedAt: Date;
 }

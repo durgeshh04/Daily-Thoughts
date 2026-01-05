@@ -5,11 +5,13 @@ import { UsersModule } from './modules/users/users.module';
 import { PostsModule } from './modules/posts/posts.module';
 import { Database } from './database/database.module';
 import { ConfigModule } from './config/config.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule,
-    // UsersModule,
+    UsersModule,
+    AuthModule,
     // PostsModule,
     Database,
   ],
